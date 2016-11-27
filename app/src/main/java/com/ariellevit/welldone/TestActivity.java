@@ -12,17 +12,25 @@ import android.widget.TextView;
 public class TestActivity extends Activity {
 
     private TextView tvTime;
-    private int timeSeconds = 30;
+    private int timeSeconds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_timer);
 
+        Food food1 = new Food("passta", 22);
+
+        timeSeconds = (int) food1.getTime();
+
         tvTime = (TextView) findViewById(R.id.timer);
         reverseTimer(timeSeconds, tvTime);
 
+        TimerDbAdapter dbAdapter = new TimerDbAdapter(getBaseContext());
+        dbAdapter.open();
+        dbAdapter.createFood(food1.getName() + "", food1.getTime());
 
+        dbAdapter.close();
 
     }
 

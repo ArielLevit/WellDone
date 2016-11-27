@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -33,7 +34,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        Button foodList = (Button) findViewById(R.id.buttonFoodList);
+        foodList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainActivityListFragment.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

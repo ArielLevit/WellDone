@@ -12,6 +12,7 @@ import java.util.Calendar;
 
 
 public class TimerDbAdapter {
+
     private static final String DATABASE_NAME = "WellDone.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -80,7 +81,7 @@ public class TimerDbAdapter {
         return sqlDB.update(FOOD_TABLE, values, COLUMN_ID + " = " + idToUpdate, null);
     }
 
-    public ArrayList<Food> getAllNotes(){
+    public ArrayList<Food> getAllFoods(){
         ArrayList<Food> foods = new ArrayList<Food>();
 
         //Grab all the information from our database for the foods in it
@@ -105,6 +106,8 @@ public class TimerDbAdapter {
 
     private static class TimerDbHelper extends SQLiteOpenHelper {
 
+
+
         TimerDbHelper(Context context){
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
@@ -113,6 +116,7 @@ public class TimerDbAdapter {
         public void onCreate(SQLiteDatabase db) {
             //create note table
             db.execSQL(CREATE_TABLE_FOOD);
+//            getTableAsString(db, FOOD_TABLE);
         }
 
         @Override
@@ -125,6 +129,41 @@ public class TimerDbAdapter {
             onCreate(db);
 
         }
+
+        String TAG = "DbHelper";
+         // functions omitted
+
+
+        /**
+         * Helper function that parses a given table into a string
+         * and returns it for easy printing. The string consists of
+         * the table name and then each row is iterated through with
+         * column_name: value pairs printed out.
+         *
+         * @param db the database to get the table from
+         * @param tableName the the name of the table to parse
+         * @return the table tableName as a string
+         */
+        public String getTableAsString(SQLiteDatabase db, String tableName) {
+            Log.d(TAG, "getTableAsString called");
+            String tableString = String.format("Table %s:\n", tableName);
+            Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
+            if (allRows.moveToFirst() ){
+                String[] columnNames = allRows.getColumnNames();
+                do {
+                    for (String name: columnNames) {
+                        tableString += String.format("%s: %s\n", name,
+                                allRows.getString(allRows.getColumnIndex(name)));
+                    }
+                    tableString += "\n";
+
+                } while (allRows.moveToNext());
+            }
+
+            return tableString;
+        }
+
+
     }
 
 }
