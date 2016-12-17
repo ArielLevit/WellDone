@@ -27,12 +27,12 @@ public class TimerDbAdapter {
     private String[] allColumns = { COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DATE};
 
     public static final String CREATE_TABLE_FOOD = "create table " + FOOD_TABLE + " ( "
-            + COLUMN_ID + " integer primary  key autoincrement, "
+            + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text not null, "
             + COLUMN_TIME + " long not null, "
             + COLUMN_DATE + ");";
 
-    private SQLiteDatabase sqlDB;
+    public static SQLiteDatabase sqlDB;
     private Context context;
     private TimerDbHelper timerDbHelper;
 
@@ -50,7 +50,18 @@ public class TimerDbAdapter {
         timerDbHelper.close();
     }
 
-    public Food createFood(String name, long time){
+    public void createFood(Food food){
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, food.getName());
+        values.put(COLUMN_TIME, food.getTime());
+        values.put(COLUMN_DATE, Calendar.getInstance().getTimeInMillis() + "");
+
+        sqlDB.insert(FOOD_TABLE, null, values);
+
+
+    }
+
+    public Food addFood(String name, long time){
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_TIME, time);
@@ -67,9 +78,24 @@ public class TimerDbAdapter {
         return newFood;
     }
 
-    public boolean deleteFood(long id) {
+
+
+
+
+
+    public boolean deleteFoodById(long id) {
         return sqlDB.delete(FOOD_TABLE, COLUMN_ID + "=" + id, null) > 0;
     }
+
+
+    public void deleteFoodByName(String name) {
+         sqlDB.execSQL("DELETE FROM " + FOOD_TABLE+ " WHERE "+COLUMN_NAME+"='"+name+"'");
+    }
+
+    public boolean deleteFoodByTime(long time) {
+        return sqlDB.delete(FOOD_TABLE, COLUMN_TIME + "=" + time, null) > 0;
+    }
+
 
 
     public long updateFood (long idToUpdate, String newName, String newTime){
@@ -97,6 +123,8 @@ public class TimerDbAdapter {
     }
 
 
+
+
     private Food cursorToFood (Cursor cursor) {
         Food newFood = new Food ( cursor.getString(1), cursor.getLong(2), cursor.getLong(0),
                 cursor.getLong(3) );
@@ -114,13 +142,14 @@ public class TimerDbAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            //create note table
+            //create table
             db.execSQL(CREATE_TABLE_FOOD);
-//            getTableAsString(db, FOOD_TABLE);
+//            getTableAsString(sqlDB, FOOD_TABLE);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
             Log.w(TimerDbHelper.class.getName(),
                     "Upgrading database from version " + oldVersion + " to "
                             + newVersion + ", which will destroy all old data");
@@ -130,39 +159,19 @@ public class TimerDbAdapter {
 
         }
 
-        String TAG = "DbHelper";
-         // functions omitted
 
 
-        /**
-         * Helper function that parses a given table into a string
-         * and returns it for easy printing. The string consists of
-         * the table name and then each row is iterated through with
-         * column_name: value pairs printed out.
-         *
-         * @param db the database to get the table from
-         * @param tableName the the name of the table to parse
-         * @return the table tableName as a string
-         */
-        public String getTableAsString(SQLiteDatabase db, String tableName) {
-            Log.d(TAG, "getTableAsString called");
-            String tableString = String.format("Table %s:\n", tableName);
-            Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
-            if (allRows.moveToFirst() ){
-                String[] columnNames = allRows.getColumnNames();
-                do {
-                    for (String name: columnNames) {
-                        tableString += String.format("%s: %s\n", name,
-                                allRows.getString(allRows.getColumnIndex(name)));
-                    }
-                    tableString += "\n";
 
-                } while (allRows.moveToNext());
-            }
-
-            return tableString;
-        }
-
+//        public void addFood(Food food) {
+//            SQLiteDatabase db = this.getWritableDatabase();
+//            ContentValues values = new ContentValues();
+//            values.put(COLUMN_NAME, food.getName());
+//            values.put(COLUMN_TIME, food.getTime());
+//            values.put(COLUMN_DATE, Calendar.getInstance().getTimeInMillis() + "");
+//            // Inserting Row
+//            db.insert(TABLE_SHOPS, null, values);
+//            db.close(); // Closing database connection
+//        }
 
     }
 

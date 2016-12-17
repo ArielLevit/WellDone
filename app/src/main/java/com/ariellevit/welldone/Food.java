@@ -1,18 +1,17 @@
 package com.ariellevit.welldone;
 
-/**
- * Created by אריאל on 20/11/2016.
- */
+
 
 public class Food {
     private String name;
     private long nameId, time, dateCreatedMilli;
 
+    public Food() {
+    }
 
     public Food(String name, long time) {
         this.time = time;
         this.name = name;
-        this.nameId = 0;
         this.dateCreatedMilli = 0;
     }
 
@@ -38,4 +37,21 @@ public class Food {
     public long getDateCreatedMilli() {
         return dateCreatedMilli;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNameId(long nameId) {
+        this.nameId = nameId;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public void setDateCreatedMilli(long dateCreatedMilli) {
+        this.dateCreatedMilli = dateCreatedMilli;
+    }
 }
+

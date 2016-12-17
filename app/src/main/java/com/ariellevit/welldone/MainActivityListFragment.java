@@ -10,7 +10,7 @@ public class MainActivityListFragment extends ListFragment {
     private ArrayList<Food> foods;
     private FoodAdapter foodAdapter;
 
-    
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
