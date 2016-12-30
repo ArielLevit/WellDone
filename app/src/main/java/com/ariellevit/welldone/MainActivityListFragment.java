@@ -17,7 +17,6 @@ public class MainActivityListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
 
-
         TimerDbAdapter dbAdapter = new TimerDbAdapter(getActivity().getBaseContext());
         dbAdapter.open();
         foods = dbAdapter.getAllFoods();

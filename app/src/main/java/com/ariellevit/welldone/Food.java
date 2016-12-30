@@ -3,21 +3,24 @@ package com.ariellevit.welldone;
 
 
 public class Food {
-    private String name;
+    private String name, printedTime;
     private long nameId, time, dateCreatedMilli;
 
     public Food() {
     }
 
-    public Food(String name, long time) {
+    public Food(String name, long time, String printedTime) {
         this.time = time;
         this.name = name;
+        this.printedTime = printedTime;
+
         this.dateCreatedMilli = 0;
     }
 
-    public Food(String name, long time, long dateCreatedMilli, long nameId) {
+    public Food(String name, long time, String printedTime, long dateCreatedMilli, long nameId) {
         this.name = name;
         this.time = time;
+        this.printedTime = printedTime;
         this.dateCreatedMilli = dateCreatedMilli;
         this.nameId = nameId;
     }
@@ -34,12 +37,20 @@ public class Food {
         return time;
     }
 
+    public String getPrintedTime() {
+        return printedTime;
+    }
+
     public long getDateCreatedMilli() {
         return dateCreatedMilli;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setPrintedTime(String printedTime) {
+        this.printedTime = printedTime;
     }
 
     public void setNameId(long nameId) {

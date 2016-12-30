@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,8 +12,9 @@ import java.util.Calendar;
 
 public class TimerDbAdapter {
 
+
     private static final String DATABASE_NAME = "WellDone.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 9;
 
     public static final String FOOD_TABLE = "food";
     public static final String COLUMN_ID = "_id";
@@ -23,14 +23,16 @@ public class TimerDbAdapter {
     public static final String COLUMN_TIME = "time";
     //current time of action:
     public static final String COLUMN_DATE = "date";
+    //time for food list:
+    public static final String COLUMN_PRINTED_TIME = "printed_time";
 
-    private String[] allColumns = { COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DATE};
+    private String[] allColumns = {COLUMN_ID, COLUMN_NAME, COLUMN_TIME, COLUMN_DATE, COLUMN_PRINTED_TIME};
 
-    public static final String CREATE_TABLE_FOOD = "create table " + FOOD_TABLE + " ( "
+    public static final String CREATE_TABLE_FOOD = "CREATE TABLE " + FOOD_TABLE + " ( "
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text not null, "
             + COLUMN_TIME + " long not null, "
-            + COLUMN_DATE + ");";
+            + COLUMN_DATE + COLUMN_PRINTED_TIME + ", text DEFAULT '00:00'" + ");";
 
     public static SQLiteDatabase sqlDB;
     private Context context;
@@ -55,32 +57,12 @@ public class TimerDbAdapter {
         values.put(COLUMN_NAME, food.getName());
         values.put(COLUMN_TIME, food.getTime());
         values.put(COLUMN_DATE, Calendar.getInstance().getTimeInMillis() + "");
+        values.put(COLUMN_PRINTED_TIME, food.getPrintedTime() );
 
         sqlDB.insert(FOOD_TABLE, null, values);
 
 
     }
-
-    public Food addFood(String name, long time){
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, name);
-        values.put(COLUMN_TIME, time);
-        values.put(COLUMN_DATE, Calendar.getInstance().getTimeInMillis() + "");
-
-        long insertId = sqlDB.insert(FOOD_TABLE, null, values);
-
-        Cursor cursor = sqlDB.query(FOOD_TABLE, allColumns, COLUMN_ID + " = " + insertId,
-                null, null, null, null);
-
-        cursor.moveToFirst();
-        Food newFood = cursorToFood(cursor);
-        cursor.close();
-        return newFood;
-    }
-
-
-
-
 
 
     public boolean deleteFoodById(long id) {
@@ -89,11 +71,15 @@ public class TimerDbAdapter {
 
 
     public void deleteFoodByName(String name) {
-         sqlDB.execSQL("DELETE FROM " + FOOD_TABLE+ " WHERE "+COLUMN_NAME+"='"+name+"'");
+        sqlDB.execSQL("DELETE FROM " + FOOD_TABLE + " WHERE "+COLUMN_NAME+"='"+name+"'");
     }
 
     public boolean deleteFoodByTime(long time) {
         return sqlDB.delete(FOOD_TABLE, COLUMN_TIME + "=" + time, null) > 0;
+    }
+
+    public void getPrintByName(String name) {
+        sqlDB.execSQL("SELECT" +COLUMN_PRINTED_TIME+ " FROM " + FOOD_TABLE + " WHERE "+COLUMN_NAME+"='"+name+"'");
     }
 
 
@@ -114,6 +100,7 @@ public class TimerDbAdapter {
         Cursor cursor = sqlDB.query(FOOD_TABLE, allColumns, null, null, null, null, null);
 
         for (cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()){
+
             Food food = cursorToFood(cursor);
             foods.add(food);
         }
@@ -122,11 +109,17 @@ public class TimerDbAdapter {
         return foods;
     }
 
-
+    public String secToMin (Long sec){
+        int minutes = (int)(sec / 60) ;
+        int seconds = (int) (sec - (minutes * 60));
+        String result = String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
+        return result;
+    }
 
 
     private Food cursorToFood (Cursor cursor) {
-        Food newFood = new Food ( cursor.getString(1), cursor.getLong(2), cursor.getLong(0),
+
+        Food newFood = new Food ( cursor.getString(1), cursor.getLong(2), cursor.getString(4), cursor.getLong(0),
                 cursor.getLong(3) );
         return newFood;
     }
@@ -143,21 +136,34 @@ public class TimerDbAdapter {
         @Override
         public void onCreate(SQLiteDatabase db) {
             //create table
+//            db.execSQL(upgradeQuery);
+
             db.execSQL(CREATE_TABLE_FOOD);
-//            getTableAsString(sqlDB, FOOD_TABLE);
+
         }
+
+
+
+//
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-            Log.w(TimerDbHelper.class.getName(),
-                    "Upgrading database from version " + oldVersion + " to "
-                            + newVersion + ", which will destroy all old data");
-            //Destroy data
-            db.execSQL("DROP TABLE IF EXIST " + FOOD_TABLE);
-            onCreate(db);
-
+            String upgradeQuery = "ALTER TABLE " + FOOD_TABLE + " ADD COLUMN " + COLUMN_PRINTED_TIME + " text";
+            if (oldVersion == 8 && newVersion == 9)
+                db.execSQL(upgradeQuery);
         }
+
+//        @Override
+//        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//
+//            Log.w(TimerDbHelper.class.getName(),
+//                    "Upgrading database from version " + oldVersion + " to "
+//                            + newVersion + ", which will destroy all old data");
+//            //Destroy data
+//            db.execSQL("DROP TABLE IF EXISTS " + FOOD_TABLE);
+//            onCreate(db);
+//
+//        }
 
 
 

@@ -14,6 +14,8 @@ public class FoodAdapter extends ArrayAdapter<Food> {
 
     public static class ViewHolder{
         TextView name;
+        TextView time;
+
 
     }
     public FoodAdapter(Context context, ArrayList<Food> foods) {
@@ -33,6 +35,7 @@ public class FoodAdapter extends ArrayAdapter<Food> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_row,parent,false);
 
             ViewHolder.name = (TextView) convertView.findViewById(R.id.listName);
+            ViewHolder.time = (TextView) convertView.findViewById(R.id.listTime);
 
             convertView.setTag(ViewHolder);
         }else {
@@ -40,6 +43,12 @@ public class FoodAdapter extends ArrayAdapter<Food> {
         }
 
         ViewHolder.name.setText(food.getName());
+        TimerDbAdapter db = new TimerDbAdapter(getContext());
+//        db.open();
+
+
+//        String timeS = String.valueOf(food.getTime());
+        ViewHolder.time.setText(food.getPrintedTime());
 
 
 

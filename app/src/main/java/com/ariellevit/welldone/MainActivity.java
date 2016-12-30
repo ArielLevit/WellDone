@@ -2,7 +2,6 @@ package com.ariellevit.welldone;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         foodList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MainActivityListFragment.class);
+                Intent intent = new Intent(MainActivity.this, FoodListActivity.class);
                 startActivity(intent);
             }
         });
@@ -69,23 +68,5 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // //////////////COUNT DOWN START/////////////////////////
-    public void reverseTimer(int Seconds, final TextView tv){
 
-        new CountDownTimer(Seconds* 1000+1000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
-                int minutes = seconds / 60;
-                seconds = seconds % 60;
-                tv.setText("TIME : " + String.format("%02d", minutes)
-                        + ":" + String.format("%02d", seconds));
-            }
-
-            public void onFinish() {
-                tv.setText("Completed");
-            }
-        }.start();
-    }
-    // //////////////COUNT DOWN END/////////////////////////
 }

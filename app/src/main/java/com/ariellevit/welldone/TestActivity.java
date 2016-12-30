@@ -5,8 +5,6 @@ package com.ariellevit.welldone;
  */
 
 import android.app.Activity;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -24,23 +22,19 @@ public class TestActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_timer);
 
-//        Food food1 = new Food("passta", 22);
-
-//        timeSeconds = (int) food1.getTime();
-
         tvTime = (TextView) findViewById(R.id.timer);
 
 
 
-        String TAG = "All foods:";
-
         TimerDbAdapter dbAdapter = new TimerDbAdapter(getBaseContext());
         dbAdapter.open();
-//        Food food1  = dbAdapter.addFood("passta", 22);
-//        dbAdapter.createFood(new Food("passta", 22));
-        dbAdapter.createFood(new Food("pizza", 358));
-//        timeSeconds = (int) food1.getTime();
 
+        Food ariel = new Food("passta", 22, "33:33");
+
+//        dbAdapter.createFood(ariel);
+
+//        timeSeconds = (int) food1.getTime();
+//
 
 
 
@@ -53,14 +47,11 @@ public class TestActivity extends Activity {
         }
 
 
-        dbAdapter.close();
 
+        dbAdapter.close();
 
         reverseTimer(timeSeconds, tvTime);
 
-
-
-//        getTableAsString(TimerDbAdapter.sqlDB, TimerDbAdapter.FOOD_TABLE);
 
     }
 
@@ -87,38 +78,6 @@ public class TestActivity extends Activity {
 
 
 
-    String TAG = "Ariel";
-    // functions omitted
-
-
-    /**
-     * Helper function that parses a given table into a string
-     * and returns it for easy printing. The string consists of
-     * the table name and then each row is iterated through with
-     * column_name: value pairs printed out.
-     *
-     * @param db the database to get the table from
-     * @param tableName the the name of the table to parse
-     * @return the table tableName as a string
-     */
-    public String getTableAsString(SQLiteDatabase db, String tableName) {
-        Log.d(TAG, "Ariel");
-        String tableString = String.format("Table %s:\n", tableName);
-        Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
-        if (allRows.moveToFirst() ){
-            String[] columnNames = allRows.getColumnNames();
-            do {
-                for (String name: columnNames) {
-                    tableString += String.format("%s: %s\n", name,
-                            allRows.getString(allRows.getColumnIndex(name)));
-                }
-                tableString += "\n";
-
-            } while (allRows.moveToNext());
-        }
-
-        return tableString;
-    }
 
 
 
