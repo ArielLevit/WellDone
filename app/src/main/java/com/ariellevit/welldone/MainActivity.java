@@ -2,6 +2,7 @@ package com.ariellevit.welldone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,8 +15,15 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TIME_EXTRA = "com.ariellevit.welldone. Time";
-    private TextView tvTime;
+    public static final String  FOOD_TIME_EXTRA = "com.ariellevit.welldone.Food Time";
+    public static final String  FOOD_ID_EXTRA = "com.ariellevit.welldone.Food ID";
+    public static final String  FOOD_NAME_EXTRA = "com.ariellevit.welldone.Food Name";
+    public static final String  FOOD_DATE_EXTRA = "com.ariellevit.welldone.Food Date";
+    public static final String  FOOD_START_EXTRA = "com.ariellevit.welldone.Food Start";
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, TestActivity.class);
+                Intent intent = new Intent(MainActivity.this, MyMeal.class);
                 startActivity(intent);
             }
         });
@@ -41,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
 
 
@@ -67,6 +77,29 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    // //////////////COUNT DOWN START/////////////////////////
+    public void reverseTimer(long Seconds, final TextView tv){
+
+        new CountDownTimer(Seconds* 1000+1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+                int minutes = seconds / 60;
+                seconds = seconds % 60;
+                tv.setText("TIME : " + String.format("%02d", minutes)
+                        + ":" + String.format("%02d", seconds));
+            }
+
+            public void onFinish() {
+                tv.setText("Completed");
+            }
+        }.start();
+    }
+    // //////////////COUNT DOWN END/////////////////////////
+
+
 
 
 }

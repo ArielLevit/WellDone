@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Food Name"
-        android:id="@+id/listName"
+        android:id="@+id/listMealName"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginStart="15dp"
@@ -30,8 +30,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearance"
         android:layout_marginEnd="10dp"
-        android:id="@+id/listTime"
-        android:layout_alignBottom="@+id/listName"
+        android:id="@+id/listMealTime"
+        android:layout_alignBottom="@+id/listMealName"
         android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

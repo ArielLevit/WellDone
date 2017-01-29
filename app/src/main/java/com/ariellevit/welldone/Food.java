@@ -4,7 +4,7 @@ package com.ariellevit.welldone;
 
 public class Food {
     private String name, printedTime;
-    private long nameId, time, dateCreatedMilli;
+    private long foodId, time, dateCreatedMilli;
 
     public Food() {
     }
@@ -17,20 +17,20 @@ public class Food {
         this.dateCreatedMilli = 0;
     }
 
-    public Food(String name, long time, String printedTime, long dateCreatedMilli, long nameId) {
+    public Food(String name, long time, String printedTime, long dateCreatedMilli, long foodId) {
         this.name = name;
         this.time = time;
         this.printedTime = printedTime;
         this.dateCreatedMilli = dateCreatedMilli;
-        this.nameId = nameId;
+        this.foodId = foodId;
     }
 
     public String getName() {
         return name;
     }
 
-    public long getNameId() {
-        return nameId;
+    public long getFoodId() {
+        return foodId;
     }
 
     public long getTime() {
@@ -53,9 +53,9 @@ public class Food {
         this.printedTime = printedTime;
     }
 
-    public void setNameId(long nameId) {
-        this.nameId = nameId;
-    }
+//    public void setFoodId(long foodId) {
+//        this.foodId = foodId;
+//    }
 
     public void setTime(long time) {
         this.time = time;
