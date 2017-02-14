@@ -164,7 +164,7 @@ public Food createFood(String name, Long time, String pTime){
         return sqlDB.update(FOOD_TABLE, values, COLUMN_ID + " = " + idToUpdate, null);
     }
 
-    public long updateTimer (long idToUpdate){
+    public long updateStartTimer (long idToUpdate){
         ContentValues values = new ContentValues();
 
         values.put(C_START, Calendar.getInstance().getTimeInMillis() + "");

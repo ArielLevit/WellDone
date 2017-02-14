@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">WellDone</string>
+    <string name="my_menu">My Menu</string>
+    <string name="my_meal">My Meal</string>
     <string name="action_settings">Settings</string>
 
     <!-- Main List Long Press Context Menu-->

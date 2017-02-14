@@ -17,11 +17,13 @@ import java.util.Calendar;
 public class TimerAdapter extends ArrayAdapter<Timer> {
 
     final MediaPlayer ring = MediaPlayer.create(getContext(), R.raw.cant_stop);
+    boolean isCountdown = false;
 
     public static class ViewHolder{
         TextView name;
         TextView time;
         Button start;
+
 
     }
 
@@ -49,21 +51,40 @@ public class TimerAdapter extends ArrayAdapter<Timer> {
             convertView.setTag(ViewHolder);
 
 
-            Button startButton = (Button) convertView.findViewById(R.id.buttonMealStart);
+            final Button startButton = ViewHolder.start;
             startButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    long id = timer.getTimerId();
-                    TimerDbAdapter db = new TimerDbAdapter(getContext());
-                    db.open();
-                    db.updateTimer(id);
-                    db.close();
+                    @Override
+                    public void onClick(View view) {
 
-                    long time = timer.getTime();
-                    reverseTimer(time, ViewHolder.time);
+                        if (!isCountdown){
+                            long id = timer.getTimerId();
+                            TimerDbAdapter db = new TimerDbAdapter(getContext());
+                            db.open();
+                            db.updateStartTimer(id);
+                            db.close();
+                            long start = timer.getStart();
+                            long time = timer.getTime();
+                            reverseTimer(time, ViewHolder.time);
 
-                }
-            });
+                            startButton.setText("PAUSE");
+                            isCountdown = true;
+
+                        } else {
+                            long now = Calendar.getInstance().getTimeInMillis();
+                            long foodTime = timer.getTime()*1000;
+                            long start = timer.getStart();
+                            long result1 = (start + foodTime) - now ;
+                            long result = result1 / 1000;
+
+                            secToPause(result, ViewHolder.time);
+
+                        }
+
+                    }
+                });
+
+
+
 
         }else {
             ViewHolder = (TimerAdapter.ViewHolder) convertView.getTag();
@@ -71,6 +92,10 @@ public class TimerAdapter extends ArrayAdapter<Timer> {
 
 
         ViewHolder.name.setText(timer.getName());
+
+
+
+
 
         if(timer.getStart() < Calendar.getInstance().getTimeInMillis() && timer.getStart() > 0){
             long now = Calendar.getInstance().getTimeInMillis();
@@ -111,6 +136,17 @@ public class TimerAdapter extends ArrayAdapter<Timer> {
         }.start();
     }
     // //////////////COUNT DOWN END/////////////////////////
+
+
+    public void secToPause (long Seconds, final TextView tv){
+        int seconds = (int) Seconds;
+        int minutes = seconds / 60;
+        seconds = seconds % 60;
+
+        tv.setText(String.format("%02d", minutes)
+                + ":" + String.format("%02d", seconds));
+
+    }
 
 
 }

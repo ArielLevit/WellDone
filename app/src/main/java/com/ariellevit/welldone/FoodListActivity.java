@@ -108,11 +108,28 @@ public class FoodListActivity extends ListActivity {
 
         alertDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //What ever you want to do with the value
-                String Name = foodName.getText().toString();
-                int hour = Integer.parseInt(foodTimeH.getText().toString());
-                int min = Integer.parseInt(foodTimeM.getText().toString());
-                int sec = Integer.parseInt(foodTimeS.getText().toString());
+                //Name:
+                String Name;
+                if (foodName.getText().toString().equals("")){
+                    Toast.makeText(getBaseContext(), "Give your food a Name", Toast.LENGTH_LONG).show();
+                    return;
+                } Name = foodName.getText().toString();
+                //Hour:
+                int hour;
+                if (foodTimeH.getText().toString().equals("")) {
+                    hour = 0;
+                } else hour = Integer.parseInt(foodTimeH.getText().toString());
+                //min:
+                int min;
+                if (foodTimeM.getText().toString().equals("")) {
+                    min = 0;
+                } else min = Integer.parseInt(foodTimeM.getText().toString());
+                //sec:
+                int sec;
+                if (foodTimeS.getText().toString().equals("")) {
+                    sec = 0;
+                } else sec = Integer.parseInt(foodTimeS.getText().toString());
+
                 long seconds = toSeconds(sec, min, hour);
                 String printedTime = secToMin(seconds);
 
@@ -161,8 +178,6 @@ public class FoodListActivity extends ListActivity {
 
                 buildEditFoodDialog(food);
 
-                Toast.makeText(this, "Changes Applied", Toast.LENGTH_LONG).show();
-
                 return true;
 
             case R.id.delete:
@@ -206,11 +221,28 @@ public class FoodListActivity extends ListActivity {
 
         alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //What ever you want to do with the value
-                String Name = foodName.getText().toString();
-                int hour = Integer.parseInt(foodTimeH.getText().toString());
-                int min = Integer.parseInt(foodTimeM.getText().toString());
-                int sec = Integer.parseInt(foodTimeS.getText().toString());
+                //Name:
+                String Name;
+                if (foodName.getText().toString().equals("")){
+                    Toast.makeText(getBaseContext(), "Give your food a Name", Toast.LENGTH_LONG).show();
+                    return;
+                } Name = foodName.getText().toString();
+                //Hour:
+                int hour;
+                if (foodTimeH.getText().toString().equals("")) {
+                    hour = 0;
+                } else hour = Integer.parseInt(foodTimeH.getText().toString());
+                //min:
+                int min;
+                if (foodTimeM.getText().toString().equals("")) {
+                    min = 0;
+                } else min = Integer.parseInt(foodTimeM.getText().toString());
+                //sec:
+                int sec;
+                if (foodTimeS.getText().toString().equals("")) {
+                    sec = 0;
+                } else sec = Integer.parseInt(foodTimeS.getText().toString());
+
                 long seconds = toSeconds(sec, min, hour);
                 String printedTime = secToMin(seconds);
 

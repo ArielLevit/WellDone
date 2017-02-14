@@ -5,6 +5,7 @@
     android:id="@+id/content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,12 +14,63 @@
     tools:context="com.ariellevit.welldone.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        app:srcCompat="@drawable/wd_logo"
+        android:id="@+id/imageView"
+        android:layout_marginBottom="273dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
 
+    <Button
+        android:text="Food List"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="34dp"
+        android:layout_marginBottom="34dp"
+        android:id="@+id/buttonFoodList"
+        app:layout_anchorGravity="center_vertical|center_horizontal"
+        android:layout_gravity="bottom|left" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:srcCompat="@android:drawable/ic_dialog_email"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_alignTop="@+id/buttonFoodList"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="49dp" />
+
+    <TextView
+        android:text="Start Cooking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonFoodList"
+        android:layout_alignStart="@+id/buttonFoodList"
+        android:layout_marginBottom="107dp"
+        android:id="@+id/textView"
+        android:textColor="@color/PrimaryTextColorInvert"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:fontFamily="cursive"
+        android:textSize="28sp" />
+
+    <at.markushi.ui.CircleButton
+        android:layout_width="64dip"
+        android:layout_height="64dip"
+        android:src="@mipmap/ic_app"
+        app:cb_color="#99CC00"
+        app:cb_pressedRingWidth="15dip"
+        android:layout_marginStart="15dp"
+        android:layout_above="@+id/textView"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
